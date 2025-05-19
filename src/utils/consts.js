@@ -1,0 +1,5 @@
+export const MAIN = '/'
+export const LOG = '/login'
+export const REG = '/registration'
+export const PROF = '/profile'
+export const EVENT = '/Event'

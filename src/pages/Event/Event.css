@@ -1,0 +1,463 @@
+/* Базовые стили */
+.event-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    line-height: 1.6;
+  }
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  h1, h2, h3, h4 {
+    color: #2c3e50;
+    margin-top: 0;
+  }
+  
+  /* Герой-секция */
+  .event-hero {
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .event-hero-content {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .event-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .event-date {
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+  
+  .event-slogan {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+  }
+  
+  .cta-button {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+  
+  .cta-button:hover {
+    background: #c0392b;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Секции */
+  .event-description-section, 
+  .schedule-section, 
+  .location-section, 
+  .organizers-section, 
+  .registration-section, 
+  .faq-section {
+    padding: 60px 0;
+  }
+  
+  .event-description-section {
+    background: #f9f9f9;
+  }
+  
+  .highlight-box {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    margin-top: 40px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .benefits-list {
+    columns: 2;
+    column-gap: 40px;
+  }
+  
+  .benefits-list li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+  }
+  
+  .benefits-list li::before {
+    content: "✓";
+    color: #27ae60;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+  }
+  
+  /* Расписание */
+  .schedule-table {
+    margin-top: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .schedule-row {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .schedule-row:last-child {
+    border-bottom: none;
+  }
+  
+  .time-cell {
+    flex: 0 0 200px;
+    padding: 20px;
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #3498db;
+    display: flex;
+    align-items: center;
+  }
+  
+  .event-cell {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .event-cell h4 {
+    margin-bottom: 5px;
+  }
+  
+  .location {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .location::before {
+    content: "📍";
+    margin-right: 5px;
+  }
+  
+  /* Локация и карта */
+  .location-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 30px;
+  }
+  
+  .location-info h3 {
+    margin-bottom: 20px;
+  }
+  
+  address {
+    font-style: normal;
+    margin-bottom: 30px;
+  }
+  
+  address p {
+    margin-bottom: 5px;
+  }
+  
+  .transport-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .transport-info h4 {
+    margin-bottom: 15px;
+  }
+  
+  .transport-info p {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .map-container {
+    height: 400px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .map {
+    height: 100%;
+    width: 100%;
+  }
+  
+  /* Организаторы */
+  .organizers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+  }
+  
+  .organizer-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+  
+  .organizer-avatar {
+    width: 80px;
+    height: 80px;
+    background: #3498db;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 0 auto 20px;
+  }
+  
+  .organizer-card h3 {
+    margin-bottom: 10px;
+  }
+  
+  .position {
+    color: #7f8c8d;
+    margin-bottom: 15px;
+  }
+  
+  .contact {
+    color: #3498db;
+    font-weight: 500;
+  }
+  
+  /* Форма регистрации */
+  .registration-section {
+    background: #f9f9f9;
+  }
+  
+  .registration-form {
+    max-width: 600px;
+    margin: 30px auto 0;
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .form-group {
+    margin-bottom: 25px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+  
+  .form-group input, 
+  .form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .radio-group {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: normal;
+    cursor: pointer;
+  }
+  
+  .submit-button {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+  
+  .submit-button:hover {
+    background: #219653;
+  }
+  
+  .success-message {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    max-width: 600px;
+    margin: 30px auto 0;
+  }
+  
+  .success-message h3 {
+    color: #27ae60;
+    margin-bottom: 20px;
+  }
+  
+  .success-message a {
+    color: #3498db;
+    text-decoration: none;
+  }
+  
+  .success-message a:hover {
+    text-decoration: underline;
+  }
+  
+  /* FAQ */
+  .faq-item {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+  
+  .faq-item h3 {
+    color: #3498db;
+    margin-bottom: 15px;
+  }
+  
+  /* Адаптивность */
+  @media (max-width: 768px) {
+    .location-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .benefits-list {
+      columns: 1;
+    }
+    
+    .event-hero h1 {
+      font-size: 2.2rem;
+    }
+    
+    .time-cell {
+      flex: 0 0 150px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .schedule-row {
+      flex-direction: column;
+    }
+    
+    .time-cell {
+      flex: 1;
+    }
+    
+    .radio-group {
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+  /* Стили для контейнера админских кнопок */
+.admin-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+  
+  /* Базовые стили для всех админских кнопок */
+  .admin-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  /* Стили для кнопки редактирования */
+  .edit-event-button {
+    background-color: #3498db;
+    color: white;
+    box-shadow: 0 2px 5px rgba(52, 152, 219, 0.3);
+  }
+  
+  .edit-event-button:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
+  }
+  
+  /* Стили для кнопки удаления */
+  .delete-event-button {
+    background-color: #f8f9fa;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+  }
+  
+  .delete-event-button:hover {
+    background-color: #e74c3c;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+  }
+  
+
+  
+  /* Стили для состояния редактирования */
+  .admin-actions.editing {
+    background-color: #f1f9fe;
+    border-bottom: 2px solid #3498db;
+  }
+  
+  /* Адаптивность для мобильных устройств */
+  @media (max-width: 768px) {
+    .admin-actions {
+      flex-direction: column;
+      gap: 10px;
+      padding: 15px;
+    }
+    
+    .admin-button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
