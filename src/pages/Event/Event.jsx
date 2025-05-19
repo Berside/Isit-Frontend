@@ -87,7 +87,6 @@ const Event = observer(() => {
                 </div>
             )}
 
-            {/* Герой-секция с основным заголовком */}
             <section className="event-hero">
                 <div className="event-hero-content">
                     <h1>{eventData.title}</h1>
@@ -102,7 +101,6 @@ const Event = observer(() => {
                 </div>
             </section>
 
-            {/* Основное описание события */}
             <section className="event-description-section">
                 <div className="container">
                     <h2>О процедуре продления</h2>
@@ -123,7 +121,6 @@ const Event = observer(() => {
                 </div>
             </section>
 
-            {/* Расписание */}
             <section className="schedule-section">
                 <div className="container">
                     <h2>График продления</h2>
@@ -141,7 +138,6 @@ const Event = observer(() => {
                 </div>
             </section>
 
-            {/* Блок с локацией */}
             <section className="location-section">
                 <div className="container">
                     <h2>Место продления</h2>
@@ -163,7 +159,6 @@ const Event = observer(() => {
                 </div>
             </section>
 
-{/* Форма регистрации */}
 <section id="registration" className="registration-section">
     <div className="container">
         <h2>Запись на продление</h2>
@@ -212,7 +207,6 @@ const Event = observer(() => {
     </div>
 </section>
 
-            {/* FAQ секция */}
             <section className="faq-section">
                 <div className="container">
                     <h2>Частые вопросы</h2>

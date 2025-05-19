@@ -1,4 +1,4 @@
-/* Базовые стили */
+
 .event-page {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: #333;
@@ -16,7 +16,6 @@
     margin-top: 0;
   }
   
-  /* Герой-секция */
   .event-hero {
     background: linear-gradient(135deg, #3498db, #2c3e50);
     color: white;
@@ -68,7 +67,6 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   }
   
-  /* Секции */
   .event-description-section, 
   .schedule-section, 
   .location-section, 
@@ -109,7 +107,6 @@
     font-weight: bold;
   }
   
-  /* Расписание */
   .schedule-table {
     margin-top: 30px;
     border-radius: 10px;
@@ -158,7 +155,6 @@
     margin-right: 5px;
   }
   
-  /* Локация и карта */
   .location-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -207,7 +203,6 @@
     width: 100%;
   }
   
-  /* Организаторы */
   .organizers-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -251,7 +246,6 @@
     font-weight: 500;
   }
   
-  /* Форма регистрации */
   .registration-section {
     background: #f9f9f9;
   }
@@ -339,7 +333,6 @@
     text-decoration: underline;
   }
   
-  /* FAQ */
   .faq-item {
     background: white;
     padding: 30px;
@@ -353,7 +346,6 @@
     margin-bottom: 15px;
   }
   
-  /* Адаптивность */
   @media (max-width: 768px) {
     .location-grid {
       grid-template-columns: 1fr;
@@ -386,7 +378,6 @@
       gap: 10px;
     }
   }
-  /* Стили для контейнера админских кнопок */
 .admin-actions {
     display: flex;
     justify-content: flex-end;
@@ -399,7 +390,6 @@
     margin-bottom: 30px;
   }
   
-  /* Базовые стили для всех админских кнопок */
   .admin-button {
     padding: 10px 20px;
     border: none;
@@ -413,7 +403,6 @@
     gap: 8px;
   }
   
-  /* Стили для кнопки редактирования */
   .edit-event-button {
     background-color: #3498db;
     color: white;
@@ -426,7 +415,6 @@
     box-shadow: 0 4px 8px rgba(52, 152, 219, 0.4);
   }
   
-  /* Стили для кнопки удаления */
   .delete-event-button {
     background-color: #f8f9fa;
     color: #e74c3c;
@@ -441,14 +429,11 @@
   }
   
 
-  
-  /* Стили для состояния редактирования */
   .admin-actions.editing {
     background-color: #f1f9fe;
     border-bottom: 2px solid #3498db;
   }
   
-  /* Адаптивность для мобильных устройств */
   @media (max-width: 768px) {
     .admin-actions {
       flex-direction: column;
