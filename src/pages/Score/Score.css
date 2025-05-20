@@ -1,0 +1,136 @@
+.score-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.score-title {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2rem;
+}
+
+.score-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-controls span {
+    font-weight: 500;
+    color: #495057;
+}
+
+.filter-select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    background-color: white;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #4dabf7;
+    box-shadow: 0 0 0 3px rgba(77, 171, 247, 0.3);
+}
+
+.score-table-container {
+    overflow-x: auto;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+}
+
+.score-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.score-table th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.score-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e9ecef;
+    color: #212529;
+    transition: background-color 0.2s;
+}
+
+.score-table tr:last-child td {
+    border-bottom: none;
+}
+
+.score-table tr:hover td {
+    background-color: #f8f9fa;
+}
+
+.score-legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .score-controls {
+        justify-content: center;
+    }
+    
+    .score-title {
+        font-size: 1.5rem;
+    }
+    
+    .score-table th,
+    .score-table td {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    
+    .score-legend {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .score-legend {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+}
