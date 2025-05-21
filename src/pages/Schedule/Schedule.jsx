@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import './Schedule.css';
-import scheduleData from '../../store/ИДБ-22-10_v2.2.json'; // Путь к вашему JSON файлу
+import scheduleData from '../../store/ИДБ-22-10_v2.2.json'; 
 
 const Schedule = observer(() => {
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());

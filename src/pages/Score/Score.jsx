@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import './Score.css';
 
 const Score = observer(() => {
-    // Заглушечные данные
     const [scores, setScores] = useState([
         { id: 1, discipline: 'Компьютерная графика и геометрическое моделирование', module1: 25, module2: 25, credit: 'зачтено', exam: 35 },
         { id: 2, discipline: 'Программирование', module1: 53, module2: 53, credit: 'зачтено', exam: 53 },
