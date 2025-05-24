@@ -11,7 +11,7 @@ const Main = observer(() => {
     <div className="app">
       <h1  onClick={() => { history(ABOUT) }}> Страница о нас ✅ </h1>
       <h1  onClick={() => { history(Allowance) }}> Страница допуска ✅ </h1>
-      <h1  onClick={() => { history(Attendance) }}> Страница посещаемости </h1>
+      <h1  onClick={() => { history(Attendance) }}> Страница посещаемости (50%) </h1>
       <h1  onClick={() => { history(Disc) }}> Страница дисциплины </h1>
       <h1  onClick={() => { history(Discs) }}> Страница дисциплин (50%)  </h1>
       <h1  onClick={() => { history(Sch) }}> Страница расписание ✅ </h1>
