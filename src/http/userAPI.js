@@ -1,22 +1,12 @@
 import {$authHost, $host} from "./index";
 import { jwtDecode } from "jwt-decode";
 
-export const registration = async (username, email, password) => {
-    try {
-      const {data} = await $host.post('v1/auth/register', {username, email, password})
-      localStorage.setItem('message', data.message)
-      console.log(data);
-      return data.message;
-    } catch (error) {
-      throw error;
-    }
-  }
 
-export const login = async (email, password) => {
-    const {data} = await $host.post('v1/auth/login', {email, password})
+export const login = async (username, password) => {
+    const {data} = await $host.post('v1/auth/login', {username, password})
     console.log(data);
     localStorage.setItem('token', data.access_token)
-    localStorage.setItem('email', email)
+    localStorage.setItem('email', username)
     const token = localStorage.getItem('token');
     if (!token) {
       throw new Error('Токен не найден в локальном хранилище');
@@ -34,25 +24,16 @@ export const check = async () => {
   }
 };
 
-export const FetchUser = async (email) => {
+export const FetchUser = async (username) => {
   try {
     const {data} = await $host.get('v1/user/getOne', {
       params: {
-          email: email  
+          username: username  
           }
       }
     )
     return data.data;
   } catch (error) {
     console.error('Ошибка при проверке пользователя:', error);
-  }
-}
-
-export const GETadmin = async (Code) => {
-  try{
-    const { data } = await $authHost.patch(`v1/user/getAdmin?code=${Code}`);
-    return data;
-  } catch(error) {
-    console.log(error)
   }
 }

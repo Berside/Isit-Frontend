@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const $host = axios.create({
-    baseURL: 'http://dekanat.blackweather.ru/api/'
+    baseURL: 'http://89.169.165.136:7400/api/'
 })
 
 const $authHost = axios.create({
-    baseURL: 'http://dekanat.blackweather.ru/api/'
+    baseURL: 'http://89.169.165.136:7400/api/'
 })
 
 const authInterceptor = config => {

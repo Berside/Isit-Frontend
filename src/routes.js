@@ -2,7 +2,7 @@ import Main from "./pages/Main/Main"
 import Profile from "./pages/Profile/Profile"
 import Event from "./pages/Event/Event"
 import Auth from "./pages/Auth/Auth"
-import {MAIN,LOG, REG, PROF, EVENT, ABOUT, Allowance, Attendance, Disc, Discs, Sch, SCORE, Teach, Teachs} from "./utils/consts"
+import {MAIN,LOG, PROF, EVENT, ABOUT, Allowance, Attendance, Disc, Discs, Sch, SCORE, Teach, Teachs} from "./utils/consts"
 import About from "./pages/About/about"    
 import Allow from "./pages/Allowance/Allow"
 import attendance from "./pages/Attendance/attendance"
@@ -20,11 +20,6 @@ export const authRoutes = [
 
 ]
 export const publicRoutes = [
-    {
-        path: REG,
-        Component: Auth
-
-    },
     {
         path: LOG,
         Component: Auth

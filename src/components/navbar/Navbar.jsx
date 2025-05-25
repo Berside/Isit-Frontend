@@ -1,53 +1,89 @@
 import { observer } from "mobx-react-lite";
-import React, { useState, useContext  } from "react";
+import React, { useState, useContext } from "react";
 import "./Navbar.css";
-import {NavLink, useLocation, useNavigate} from "react-router-dom";
-import { MAIN, LOG, PROF } from "../../utils/consts";
+import { useNavigate } from "react-router-dom";
+import { MAIN, LOG, PROF, ABOUT, Allowance, Attendance, Disc, Discs, Sch, SCORE, Teach, Teachs } from "../../utils/consts";
 import { Context } from "../../index";
+
 const Navbar = observer(() => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const history = useNavigate();
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-  const {user} = useContext(Context)
+  const {user} = useContext(Context);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   
   const logOut = () => {
-      localStorage.removeItem('id');
-      localStorage.removeItem('token');
-      localStorage.removeItem('IISaUTH');
-      user.setUser({})
-      user.setIsAdmin(false)
-      user.setIsAuth(false)
-      history(LOG)
-      window.location.reload();
-  }
+    localStorage.removeItem('id');
+    localStorage.removeItem('token');
+    localStorage.removeItem('IISaUTH');
+    user.setUser({});
+    user.setIsAdmin(false);
+    user.setIsAuth(false);
+    history(LOG);
+    window.location.reload();
+  };
+
+  const navItems = [
+    { title: "Главная", path: MAIN },
+    { title: "О нас", path: ABOUT},
+    { title: "Допуск", path: Allowance },
+    { title: "Посещаемость", path: Attendance},
+    { title: "Дисциплина", path: Disc},
+    { title: "Дисциплины", path: Discs},
+    { title: "Расписание", path: Sch},
+    { title: "Оценки студента", path: SCORE},
+    { title: "Преподаватель", path: Teach },
+    { title: "Преподаватели", path: Teachs },
+    ...(user.isAuth
+      ? [
+          { title: "Профиль", path: PROF },
+          { title: "Выход", action: logOut }
+        ]
+      : [
+          { title: "Войти", path: LOG }
+        ])
+  ];
+
+  const handleNavigate = (item) => {
+    if (item.action) {
+      item.action();
+    } else {
+      history(item.path);
+    }
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav className="navbar">
-        <div className="navbar-container">
-            <div className="navbar-logo">
-                <a onClick={() => { history(MAIN) }}>Виртуальный деканат</a>
-            </div>
-            {user.isAuth  && (
-                          <div className={`navbar-links ${isMenuOpen ? "active" : ""}`}>
-                          <a onClick={() => { history(PROF) }} className="navbar-link">Профиль</a>
-                          <a onClick={logOut} className="navbar-link">Выход</a>
-                      </div>
-            )}
-                        {!user.isAuth  && (
-                          <div className={`navbar-links ${isMenuOpen ? "active" : ""}`}>
-                          <a onClick={() => { history(LOG) }} className="navbar-link">Войти</a>
-                      </div>
-            )}
-
-            <div className="navbar-hamburger" onClick={toggleMenu}>
-                <div className={`hamburger-line ${isMenuOpen ? "line1" : ""}`}></div>
-                <div className={`hamburger-line ${isMenuOpen ? "line2" : ""}`}></div>
-                <div className={`hamburger-line ${isMenuOpen ? "line3" : ""}`}></div>
-            </div>
+      <div className="navbar-container">
+        <div className="navbar-logo">
+          <span  onClick={() => history(MAIN)} >Виртуальный деканат</span>
         </div>
+        
+        <div className="burger-menu">
+          <button 
+            className={`burger-button ${isMenuOpen ? "open" : ""}`}
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Меню"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          
+          <div className={`menu-content ${isMenuOpen ? "open" : ""}`}>
+            {navItems.map((item, index) => (
+              <div 
+                key={index} 
+                className="menu-item"
+                onClick={() => handleNavigate(item)}
+              >
+                {item.title} {item.status && <span className="status">{item.status}</span>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </nav>
-);
+  );
 });
 
 export default Navbar;

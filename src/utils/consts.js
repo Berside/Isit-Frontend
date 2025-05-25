@@ -1,6 +1,5 @@
 export const MAIN = '/'
 export const LOG = '/login'
-export const REG = '/registration'
 export const PROF = '/profile'
 export const ABOUT = '/about'
 export const Allowance = '/Allowance'
