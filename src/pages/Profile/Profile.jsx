@@ -14,8 +14,8 @@ const Profile = observer(() => {
         const fetchUserStats = async () => {
             try {
                 setIsLoading(true);
-                const email = localStorage.getItem('email');
-                const data = await FetchUser(email);
+                const username = localStorage.getItem('username');
+                const data = await FetchUser(username);
                 setUserData(data);
                 setIsLoading(false);
                 if( data.role?.name === "admin") {
@@ -56,6 +56,7 @@ const Profile = observer(() => {
                     </div>
                     <h2>{userData.username}</h2>
                     <p className="user-email">{userData.first_name} {userData.last_name} {userData.middle_name}</p>
+                    <p className="user-email">{userData.email}</p>
                 </div>
                 
                 <div className="user-details">
