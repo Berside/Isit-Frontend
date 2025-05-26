@@ -22,7 +22,7 @@ const AuthPage = observer(() => {
             user.setIsAuth(true)
             user.setIsEmail(username);
             navigate(MAIN)
-            window.location.reload();
+            // window.location.reload();
         } catch (e) {
             alert(e.response.data.message)
         }

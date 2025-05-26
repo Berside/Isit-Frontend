@@ -1,61 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import './Teachers.css';
+import { GetAllProf } from '../../http/PrepodApi';
 
 const Teachers = observer(() => {
-    const [teachers, setTeachers] = useState([
-        {
-            id: 1,
-            name: 'Иванов Александр Петрович',
-            photo: null,
-            subjects: ['Математический анализ', 'Дискретная математика'],
-            email: 'ivanov@university.edu'
-        },
-        {
-            id: 2,
-            name: 'Петрова Светлана Михайловна',
-            photo: null,
-            subjects: ['Программирование', 'Алгоритмы и структуры данных'],
-            email: 'petrova@university.edu'
-        },
-        {
-            id: 3,
-            name: 'Сидоров Владимир Васильевич',
-            photo: null,
-            subjects: ['Физика', 'Теоретическая механика'],
-            email: 'sidorov@university.edu'
-        },
-        {
-            id: 4,
-            name: 'Козлова Елена Павловна',
-            photo: null,
-            subjects: ['Базы данных', 'Веб-разработка'],
-            email: 'kozlova@university.edu'
-        },
-        {
-            id: 5,
-            name: 'Фролов Дмитрий Сергеевич',
-            photo: null,
-            subjects: ['Иностранный язык'],
-            email: 'frolov@university.edu'
-        },
-        {
-            id: 6,
-            name: 'Николаева Татьяна Константиновна',
-            photo: null,
-            subjects: ['История', 'Философия'],
-            email: 'nikolaeva@university.edu'
-        },
-    ]);
-
+    const [teachers, setTeachers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const filteredTeachers = teachers.filter(teacher =>
-        teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.subjects.some(subject =>
-            subject.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-    );
+    useEffect(() => {
+        const fetchTeachers = async () => {
+            try {
+                const response = await GetAllProf();
+                if (response.data) {
+                    setTeachers(response.data);
+                }
+            } catch (err) {
+                setError(err.message || 'Ошибка загрузки данных');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTeachers();
+    }, []);
+
+    const filteredTeachers = teachers.filter(teacher => {
+        const fullName = `${teacher.last_name} ${teacher.first_name} ${teacher.middle_name}`;
+        return (
+            fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            teacher.disciplines.some(discipline =>
+                discipline.discipline_name.toLowerCase().includes(searchTerm.toLowerCase())
+        ));
+    });
 
     const getInitial = (name) => {
         return name.charAt(0).toUpperCase();
@@ -67,6 +45,24 @@ const Teachers = observer(() => {
         const charCode = name.charCodeAt(0);
         return avatarColors[charCode % avatarColors.length];
     };
+
+    const formatAcademicDegree = (degree) => {
+        const degrees = {
+            'docent': 'Доцент',
+            'professor': 'Профессор',
+            'phd': 'Кандидат наук',
+            'doctor': 'Доктор наук'
+        };
+        return degrees[degree] || degree;
+    };
+
+    if (loading) {
+        return <div className="loading">Загрузка данных...</div>;
+    }
+
+    if (error) {
+        return <div className="error">Ошибка: {error}</div>;
+    }
 
     return (
         <div className="teachers-page">
@@ -86,34 +82,49 @@ const Teachers = observer(() => {
                 <div className="no-results">Преподаватели не найдены</div>
             ) : (
                 <div className="teachers-grid">
-                    {filteredTeachers.map(teacher => (
-                        <div key={teacher.id} className="teacher-card">
-                            <div className="teacher-avatar">
-                                {teacher.photo ? (
-                                    <img src={teacher.photo} alt={teacher.name} className="teacher-photo" />
-                                ) : (
+                    {filteredTeachers.map(teacher => {
+                        const fullName = `${teacher.last_name} ${teacher.first_name} ${teacher.middle_name}`;
+                        return (
+                            <div key={teacher.id} className="teacher-card">
+                                <div className="teacher-avatar">
                                     <div 
                                         className="teacher-initial" 
-                                        style={{ backgroundColor: getAvatarColor(teacher.name) }}
+                                        style={{ backgroundColor: getAvatarColor(teacher.last_name) }}
                                     >
-                                        {getInitial(teacher.name)}
+                                        {getInitial(teacher.last_name)}
                                     </div>
-                                )}
-                            </div>
-                            
-                            <div className="teacher-info">
-                                <h2 className="teacher-name">{teacher.name}</h2>
-                                <div className="teacher-subjects">
-                                    {teacher.subjects.map((subject, index) => (
-                                        <span key={index} className="subject-tag">{subject}</span>
-                                    ))}
                                 </div>
-                                <a href={`mailto:${teacher.email}`} className="teacher-email">
-                                    {teacher.email}
-                                </a>
+                                
+                                <div className="teacher-info">
+                                    <h2 className="teacher-name">{fullName}</h2>
+                                    <p className="teacher-degree">
+                                        {formatAcademicDegree(teacher.academic_degree)}, стаж: {teacher.teaching_experience} лет
+                                    </p>
+                                    <div className="teacher-subjects">
+                                        {teacher.disciplines.length > 0 ? (
+                                            teacher.disciplines.map((discipline, index) => (
+                                                <span key={index} className="subject-tag">
+                                                    {discipline.discipline_name}
+                                                </span>
+                                            ))
+                                        ) : (
+                                            <span className="subject-tag no-disciplines">Нет дисциплин</span>
+                                        )}
+                                    </div>
+                                    <div className="teacher-contacts">
+                                        <a href={`mailto:${teacher.email}`} className="teacher-email">
+                                            {teacher.email}
+                                        </a>
+                                        {teacher.phone_number && (
+                                            <a href={`tel:${teacher.phone_number}`} className="teacher-phone">
+                                                {teacher.phone_number}
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
         </div>

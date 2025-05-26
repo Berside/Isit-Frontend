@@ -55,7 +55,7 @@ const Profile = observer(() => {
                         {userData.username?.charAt(0).toUpperCase() || 'U'}
                     </div>
                     <h2>{userData.username}</h2>
-                    <p className="user-email">{userData.email}</p>
+                    <p className="user-email">{userData.first_name} {userData.last_name} {userData.middle_name}</p>
                 </div>
                 
                 <div className="user-details">

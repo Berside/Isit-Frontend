@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import './Score.css';
-
+import { GetAllGrade } from '../../http/gradeAPI';
+import { Context } from "../../index";
 const Score = observer(() => {
+    const {user} = useContext(Context);
+    const id = localStorage.getItem('id');
+    GetAllGrade(id)
     const [scores, setScores] = useState([
         { id: 1, discipline: 'Компьютерная графика и геометрическое моделирование', module1: 25, module2: 25, credit: 'зачтено', exam: 35 },
         { id: 2, discipline: 'Программирование', module1: 53, module2: 53, credit: 'зачтено', exam: 53 },

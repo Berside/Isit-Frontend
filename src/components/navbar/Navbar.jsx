@@ -24,16 +24,16 @@ const Navbar = observer(() => {
   const navItems = [
     { title: "Главная", path: MAIN },
     { title: "О нас", path: ABOUT},
-    { title: "Допуск", path: Allowance },
-    { title: "Посещаемость", path: Attendance},
     { title: "Дисциплина", path: Disc},
     { title: "Дисциплины", path: Discs},
-    { title: "Расписание", path: Sch},
-    { title: "Оценки студента", path: SCORE},
     { title: "Преподаватель", path: Teach },
     { title: "Преподаватели", path: Teachs },
     ...(user.isAuth
       ? [
+          { title: "Допуск", path: Allowance },
+          { title: "Посещаемость", path: Attendance},
+          { title: "Расписание", path: Sch},
+          { title: "Оценки студента", path: SCORE},
           { title: "Профиль", path: PROF },
           { title: "Выход", action: logOut }
         ]

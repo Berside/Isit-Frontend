@@ -1,62 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import './Disciplines.css';
+import { GetAllDisc } from '../../http/DiscAPI';
 
 const Disciplines = observer(() => {
-    const [disciplines, setDisciplines] = useState([
-        {
-            id: 1,
-            name: 'Математический анализ',
-            description: 'Фундаментальный курс математики, изучающий функции, пределы, производные и интегралы.',
-            teachers: ['Иванов А.П.', 'Смирнова О.И.']
-        },
-        {
-            id: 2,
-            name: 'Программирование',
-            description: 'Изучение основ программирования на современных языках.',
-            teachers: ['Петрова С.М.', 'Козлов Д.В.']
-        },
-        {
-            id: 3,
-            name: 'Физика',
-            description: 'Классическая и современная физика для технических специальностей.',
-            teachers: ['Сидоров В.В.', 'Фролова Е.П.']
-        },
-        {
-            id: 4,
-            name: 'Базы данных',
-            description: 'Проектирование и работа с реляционными и NoSQL базами данных.',
-            teachers: ['Николаева Т.К.', 'Григорьев М.М.']
-        },
-        {
-            id: 5,
-            name: 'Веб-разработка',
-            description: 'Современные технологии создания веб-приложений.',
-            teachers: ['Кузнецов А.А.', 'Михайлова Л.Н.']
-        },
-        {
-            id: 6,
-            name: 'Теория алгоритмов',
-            description: 'Изучение алгоритмов и структур данных.',
-            teachers: ['Алексеев П.Р.', 'Борисова В.С.']
-        }
-    ]);
-
+    const [disciplines, setDisciplines] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+        const fetchDisciplines = async () => {
+            try {
+                const response = await GetAllDisc();
+                if (response.data) {
+                    setDisciplines(response.data);
+                }
+            } catch (err) {
+                setError(err.message || 'Ошибка загрузки данных');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchDisciplines();
+    }, []);
+
     const filteredDisciplines = disciplines.filter(discipline =>
-        discipline.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        discipline.teachers.some(teacher =>
-            teacher.toLowerCase().includes(searchTerm.toLowerCase())
-    ));
+        discipline.discipline_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (discipline.authors && discipline.authors.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
     const getInitial = (name) => {
         return name.charAt(0).toUpperCase();
     };
+
     const avatarColors = ['#3498db', '#2ecc71', '#e74c3c', '#f39c12', '#9b59b6', '#1abc9c'];
 
     const getAvatarColor = (name) => {
         const charCode = name.charCodeAt(0);
         return avatarColors[charCode % avatarColors.length];
     };
+
+    const formatPracticeInfo = (hasPractice, hasLabs) => {
+        if (hasPractice && hasLabs) return 'Практика и лабораторные';
+        if (hasPractice) return 'Есть практика';
+        if (hasLabs) return 'Есть лабораторные';
+        return 'Нет практических занятий';
+    };
+
+    if (loading) {
+        return <div className="loading">Загрузка данных...</div>;
+    }
+
+    if (error) {
+        return <div className="error">Ошибка: {error}</div>;
+    }
 
     return (
         <div className="disciplines-page">
@@ -65,7 +64,7 @@ const Disciplines = observer(() => {
             <div className="search-container">
                 <input
                     type="text"
-                    placeholder="Поиск по названию дисциплины или преподавателю..."
+                    placeholder="Поиск по названию дисциплины или автору..."
                     className="search-input"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -81,25 +80,27 @@ const Disciplines = observer(() => {
                             <div className="discipline-header">
                                 <div 
                                     className="discipline-avatar" 
-                                    style={{ backgroundColor: getAvatarColor(discipline.name) }}
+                                    style={{ backgroundColor: getAvatarColor(discipline.discipline_name) }}
                                 >
-                                    {getInitial(discipline.name)}
+                                    {getInitial(discipline.discipline_name)}
                                 </div>
-                                <h2 className="discipline-name">{discipline.name}</h2>
+                                <h2 className="discipline-name">{discipline.discipline_name}</h2>
                             </div>
                             
                             <div className="discipline-body">
                                 <p className="discipline-description">{discipline.description}</p>
                                 
-                                <div className="discipline-teachers">
-                                    <h3>Преподаватели:</h3>
-                                    <ul className="teachers-list">
-                                        {discipline.teachers.map((teacher, index) => (
-                                            <li key={index} className="teacher-item">
-                                                {teacher}
-                                            </li>
-                                        ))}
-                                    </ul>
+                                <div className="discipline-details">
+                                    <div className="detail-item">
+                                        <span className="detail-label">Автор:</span>
+                                        <span className="detail-value">{discipline.authors || 'Не указан'}</span>
+                                    </div>
+                                    <div className="detail-item">
+                                        <span className="detail-label">Тип занятий:</span>
+                                        <span className="detail-value">
+                                            {formatPracticeInfo(discipline.has_practice, discipline.has_labs)}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -9,8 +9,9 @@ import {Spinner} from "react-bootstrap";
 const App = observer(() => {
   const {user} = useContext(Context);
   const [loading, setLoading] = useState(true);
-  const token = localStorage.getItem('token');
   useEffect(() => {
+    console.log(user);
+     const token = localStorage.getItem('token');
     const initializeAuth = async () => {
       if ( token !== null ) {
         try {
@@ -18,9 +19,6 @@ const App = observer(() => {
           if (response?.data) {
             user.setUser(response.data);
             user.setIsAuth(true);
-          }
-          if (response.data.role.name === 'admin') {
-            user.setIsAdmin(true);
           }
         } catch (error) {
           console.error('Ошибка при проверке пользователя:', error);
