@@ -46,7 +46,7 @@ export const publicRoutes = [
         Component: attendance
     },
         {
-        path: Disc,
+        path: Disc + '/:id' ,
         Component: Discipline
     },
         {
@@ -62,7 +62,7 @@ export const publicRoutes = [
         Component: Score
     },
             {
-        path: Teach,
+        path: Teach  + '/:id',
         Component: Teacher
     },
             {
