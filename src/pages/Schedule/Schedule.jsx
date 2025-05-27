@@ -69,10 +69,7 @@ const Schedule = observer(() => {
                     const isToday = currentDate.toDateString() === new Date().toDateString();
 
                     week.push(
-                        <div 
-                            key={`day-${day}`} 
-                            className={`calendar-day ${hasClasses ? 'has-classes' : ''} ${isToday ? 'today' : ''}`}
-                        >
+                        <div key={`day-${day}`} className={`calendar-day ${hasClasses ? 'has-classes' : ''} ${isToday ? 'today' : ''}`}>
                             <div className="day-header">
                                 <div className="day-number">{day}</div>
                                 <div className="weekday-name">{getWeekdayName(currentDate)}</div>
@@ -142,10 +139,7 @@ const Schedule = observer(() => {
                 </div>
                 <div className="subgroup-selector">
                     <label>Подгруппа: </label>
-                    <select 
-                        value={selectedSubgroup || 'all'} 
-                        onChange={(e) => setSelectedSubgroup(e.target.value === 'all' ? null : e.target.value)}
-                    >
+                    <select value={selectedSubgroup || 'all'} onChange={(e) => setSelectedSubgroup(e.target.value === 'all' ? null : e.target.value)}>
                         <option value="all">Все</option>
                         <option value="А">А</option>
                         <option value="Б">Б</option>

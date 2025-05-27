@@ -6,14 +6,6 @@ const RaspProf = observer(() => {
     const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [selectedSubgroup, setSelectedSubgroup] = useState(null);
-
-    const formatDate = (date) => {
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}.${month}.${year}`;
-    };
-
     const getWeekdayName = (date) => {
         const weekdays = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
         return weekdays[date.getDay()];
@@ -103,10 +95,7 @@ const RaspProf = observer(() => {
                 </div>
                 <div className="subgroup-selector">
                     <label>Подгруппа: </label>
-                    <select 
-                        value={selectedSubgroup || 'all'} 
-                        onChange={(e) => setSelectedSubgroup(e.target.value === 'all' ? null : e.target.value)}
-                    >
+                    <select value={selectedSubgroup || 'all'} onChange={(e) => setSelectedSubgroup(e.target.value === 'all' ? null : e.target.value)}>
                         <option value="all">Все</option>
                         <option value="А">А</option>
                         <option value="Б">Б</option>

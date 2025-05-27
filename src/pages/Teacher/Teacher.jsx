@@ -70,13 +70,9 @@ const Teacher = observer(() => {
             <button className="back-button" onClick={() => navigate(-1)}>
                 ← Назад к списку преподавателей
             </button>
-            
             <div className="teacher-header">
                 <div className="teacher-avatar">
-                    <div 
-                        className="teacher-initial" 
-                        style={{ backgroundColor: getAvatarColor(teacher.last_name) }}
-                    >
+                    <div className="teacher-initial" style={{ backgroundColor: getAvatarColor(teacher.last_name) }}>
                         {getInitial(teacher.last_name)}
                     </div>
                 </div>
@@ -115,7 +111,6 @@ const Teacher = observer(() => {
                         <p className="no-disciplines">Нет дисциплин</p>
                     )}
                 </div>
-                
                 {teacher.bio && (
                     <div className="teacher-section">
                         <h2 className="section-title">Биография</h2>

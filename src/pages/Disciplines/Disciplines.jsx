@@ -10,6 +10,7 @@ const Disciplines = observer(() => {
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
+    
     useEffect(() => {
         const fetchDisciplines = async () => {
             try {
@@ -27,13 +28,13 @@ const Disciplines = observer(() => {
         fetchDisciplines();
     }, []);
 
-        const filteredDisciplines = disciplines.filter(discipline => {
-            const nameMatch = discipline.discipline_name.toLowerCase().includes(searchTerm.toLowerCase());
-            const authorsMatch = discipline.authors 
-                ? String(discipline.authors).toLowerCase().includes(searchTerm.toLowerCase())
-                : false;
-            return nameMatch || authorsMatch;
-        });
+    const filteredDisciplines = disciplines.filter(discipline => {
+        const nameMatch = discipline.discipline_name.toLowerCase().includes(searchTerm.toLowerCase());
+        const authorsMatch = discipline.authors 
+            ? String(discipline.authors.name || '').toLowerCase().includes(searchTerm.toLowerCase())
+            : false;
+        return nameMatch || authorsMatch;
+    });
 
     const getInitial = (name) => {
         return name.charAt(0).toUpperCase();
@@ -55,6 +56,14 @@ const Disciplines = observer(() => {
 
     const handleDisckClick = (DiscId) => {
         navigate(`/Disc/${DiscId}`);
+    };
+
+    const formatAuthors = (authors) => {
+        if (!authors) return 'Не указан';
+        if (typeof authors === 'string') return authors;
+        if (Array.isArray(authors)) return authors.map(a => a.name).join(', ');
+        if (authors.name) return authors.name;
+        return 'Не указан';
     };
 
     if (loading) {
@@ -101,7 +110,7 @@ const Disciplines = observer(() => {
                                 <div className="discipline-details">
                                     <div className="detail-item">
                                         <span className="detail-label">Автор:</span>
-                                        <span className="detail-value">{discipline.authors || 'Не указан'}</span>
+                                        <span className="detail-value">{formatAuthors(discipline.authors)}</span>
                                     </div>
                                     <div className="detail-item">
                                         <span className="detail-label">Тип занятий:</span>

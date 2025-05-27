@@ -20,6 +20,10 @@ const ProfScore = observer(() => {
                 const response = await GetAllGradeProf(user.user.id);
                 if (response.data) {
                     setGrades(response.data);
+                    if (response.data.length > 0) {
+                        const firstDisciplineId = response.data[0].discipline.id;
+                        setSelectedDiscipline(firstDisciplineId);
+                    }
                 }
             } catch (err) {
                 setError(err.message || 'Ошибка загрузки данных');
@@ -38,11 +42,12 @@ const ProfScore = observer(() => {
 
     const groups = [...new Set(grades.map(grade => grade.student.group.id))];
 
-        const filteredGrades = grades.filter(grade => {
-            const matchesDiscipline = !selectedDiscipline || grade.discipline.id === Number(selectedDiscipline);
-            const matchesGroup = !selectedGroup || grade.student.group.id === selectedGroup;
-            return matchesDiscipline && matchesGroup;
-        });
+    const filteredGrades = grades.filter(grade => {
+        const matchesDiscipline = grade.discipline.id === Number(selectedDiscipline);
+        const matchesGroup = !selectedGroup || grade.student.group.id === selectedGroup;
+        return matchesDiscipline && matchesGroup;
+    });
+
     const studentsMap = {};
     filteredGrades.forEach(grade => {
         if (!studentsMap[grade.student.id]) {
@@ -84,7 +89,7 @@ const ProfScore = observer(() => {
 
     const handleSaveGrade = async (studentId, gradeType) => {
         if (!selectedDiscipline) {
-            setError('Выберите дисциплину');
+            setError('Дисциплина не выбрана');
             return;
         }
 
@@ -142,16 +147,10 @@ const ProfScore = observer(() => {
     return (
         <div className="prof-score-container">
             <h2>Управление оценками студентов</h2>
-            
             <div className="filters">
                 <div className="filter-group">
                     <label htmlFor="discipline">Дисциплина:</label>
-                    <select
-                        id="discipline"
-                        value={selectedDiscipline}
-                        onChange={handleDisciplineChange}
-                    >
-                        <option value="">Все дисциплины</option>
+                    <select id="discipline" value={selectedDiscipline} onChange={handleDisciplineChange}>
                         {disciplines.map(discipline => (
                             <option key={discipline.id} value={discipline.id}>
                                 {discipline.discipline_name}
@@ -162,11 +161,7 @@ const ProfScore = observer(() => {
                 
                 <div className="filter-group">
                     <label htmlFor="group">Группа:</label>
-                    <select
-                        id="group"
-                        value={selectedGroup}
-                        onChange={handleGroupChange}
-                    >
+                    <select id="group" value={selectedGroup} onChange={handleGroupChange}>
                         <option value="">Все группы</option>
                         {groups.map(group => (
                             <option key={group} value={group}>
@@ -202,30 +197,16 @@ const ProfScore = observer(() => {
                                     </td>
                                     <td>{student.student.group.id}</td>
                                     
-                                    {['module1', 'module2', 'credit', 'exam'].map(gradeType => (
+                                    {['module1', 'module2', 'zachet', 'exam'].map(gradeType => (
                                         <td key={`${student.student.id}-${gradeType}`}>
                                             {editingGrade?.studentId === student.student.id && 
                                              editingGrade?.gradeType === gradeType ? (
                                                 <div className="edit-grade">
-                                                    <input
-                                                        type="number"
-                                                        value={gradeValue}
-                                                        onChange={handleGradeChange}
-                                                        min="0"
-                                                        max="100"
-                                                    />
-                                                    <button 
-                                                        onClick={() => handleSaveGrade(student.student.id, gradeType)}
-                                                        className="save-btn"
-                                                    >
+                                                    <input type="number" value={gradeValue} onChange={handleGradeChange} min="0" max="100" />
+                                                    <button onClick={() => handleSaveGrade(student.student.id, gradeType)} className="save-btn">
                                                         Сохранить
                                                     </button>
-                                                    <button 
-                                                        onClick={handleCancelEdit}
-                                                        className="cancel-btn"
-                                                    >
-                                                        Отмена
-                                                    </button>
+                                                    <button onClick={handleCancelEdit} className="cancel-btn"> Отмена </button>
                                                 </div>
                                             ) : (
                                                 <div className="grade-cell">
@@ -233,23 +214,11 @@ const ProfScore = observer(() => {
                                                         {student.grades[gradeType]?.value || '-'}
                                                     </span>
                                                     <div className="grade-actions">
-                                                        <button 
-                                                            onClick={() => handleEditClick(
-                                                                student.student.id, 
-                                                                gradeType,
-                                                                student.grades[gradeType]?.value
-                                                            )}
-                                                            className="edit-btn"
-                                                        >
+                                                        <button onClick={() => handleEditClick(student.student.id, gradeType, student.grades[gradeType]?.value)} className="edit-btn">
                                                             {student.grades[gradeType] ? 'Изменить' : 'Добавить'}
                                                         </button>
                                                         {student.grades[gradeType]?.id && (
-                                                            <button 
-                                                                onClick={() => handleDeleteGrade(student.grades[gradeType].id)}
-                                                                className="delete-btn"
-                                                            >
-                                                                Удалить
-                                                            </button>
+                                                            <button onClick={() => handleDeleteGrade(student.grades[gradeType].id)} className="delete-btn"> Удалить </button>
                                                         )}
                                                     </div>
                                                 </div>

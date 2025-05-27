@@ -32,7 +32,6 @@ const Event = observer(() => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Форма отправлена:', formData);
         setIsRegistered(true);
     };
 

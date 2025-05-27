@@ -5,9 +5,7 @@ import './attendance.css';
 const Attendance = observer(() => {
     const disciplines = [
         { id: 1, name: 'Математический анализ' },
-        { id: 2, name: 'Программирование' },
-        { id: 3, name: 'Физика' },
-        { id: 4, name: 'Базы данных' },
+        { id: 2, name: 'Основы объектно-ориентированного программирования' },
     ];
 
     const attendanceData = {
@@ -23,17 +21,6 @@ const Attendance = observer(() => {
             { date: '2023-09-09', present: true },
             { date: '2023-09-16', present: false },
             { date: '2023-09-23', present: true },
-        ],
-        3: [
-            { date: '2023-09-03', present: false },
-            { date: '2023-09-10', present: false },
-            { date: '2023-09-17', present: true },
-        ],
-        4: [
-            { date: '2023-09-05', present: true },
-            { date: '2023-09-12', present: true },
-            { date: '2023-09-19', present: true },
-            { date: '2023-09-26', present: false },
         ],
     };
 

@@ -22,6 +22,7 @@ const Allow = observer(() => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [availableTeachers, setAvailableTeachers] = useState([]);
+  const [createdDopusk, setCreatedDopusk] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,16 +70,27 @@ const Allow = observer(() => {
     }
 
     try {
-      await CreateDopusk(
+      const data = await CreateDopusk(
         formData.student_id,
         formData.professor_id,
         formData.date,
         formData.type,
         formData.discipline_id
       );
+      setCreatedDopusk(data.data);
       setSubmitted(true);
     } catch (err) {
       setError(err.response?.data?.message || 'Ошибка при создании допуска');
+    }
+  };
+
+  const getTypeName = (type) => {
+    switch(type) {
+      case 'zachet': return 'Зачет';
+      case 'exam': return 'Экзамен';
+      case 'module1': return 'Модуль 1';
+      case 'module2': return 'Модуль 2';
+      default: return type;
     }
   };
 
@@ -98,13 +110,7 @@ const Allow = observer(() => {
         <form onSubmit={handleSubmit} className="allow-form">
           <div className="form-group">
             <label htmlFor="discipline_id">Дисциплина:</label>
-            <select
-              id="discipline_id"
-              name="discipline_id"
-              value={formData.discipline_id}
-              onChange={handleChange}
-              required
-            >
+            <select id="discipline_id"name="discipline_id"value={formData.discipline_id}onChange={handleChange}required>
               <option value="">Выберите дисциплину</option>
               {disciplines.map(discipline => (
                 <option key={discipline.id} value={discipline.id}>
@@ -116,14 +122,7 @@ const Allow = observer(() => {
           
           <div className="form-group">
             <label htmlFor="professor_id">Преподаватель:</label>
-            <select
-              id="professor_id"
-              name="professor_id"
-              value={formData.professor_id}
-              onChange={handleChange}
-              disabled={!formData.discipline_id}
-              required
-            >
+            <select id="professor_id"name="professor_id"value={formData.professor_id}onChange={handleChange}disabled={!formData.discipline_id}required>
               <option value="">Выберите преподавателя</option>
               {availableTeachers.map(teacher => (
                 <option key={teacher.id} value={teacher.id}>
@@ -135,59 +134,20 @@ const Allow = observer(() => {
           
           <div className="form-group">
             <label htmlFor="date">Дата:</label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              required
-            />
+            <input type="date"id="date"name="date"value={formData.date}onChange={handleChange}required/>
           </div>
           
           <div className="form-group">
             <label>Тип допуска:</label>
             <div className="radio-group">
               <label>
-                <input
-                  type="radio"
-                  name="type"
-                  value="zachet"
-                  checked={formData.type === 'zachet'}
-                  onChange={handleChange}
-                />
-                Зачет
-              </label>
+                <input type="radio"name="type"value="zachet"checked={formData.type === 'zachet'}onChange={handleChange}/>Зачет</label>
               <label>
-                <input
-                  type="radio"
-                  name="type"
-                  value="exam"
-                  checked={formData.type === 'exam'}
-                  onChange={handleChange}
-                />
-                Экзамен
-              </label>
+                <input type="radio"name="type"value="exam"checked={formData.type === 'exam'}onChange={handleChange}/>Экзамен</label>
               <label>
-                <input
-                  type="radio"
-                  name="type"
-                  value="module1"
-                  checked={formData.type === 'module1'}
-                  onChange={handleChange}
-                />
-                Модуль 1
-              </label>
+                <input type="radio" name="type" value="module1"checked={formData.type === 'module1'}onChange={handleChange}/>Модуль 1</label>
               <label>
-                <input
-                  type="radio"
-                  name="type"
-                  value="module2"
-                  checked={formData.type === 'module2'}
-                  onChange={handleChange}
-                />
-                Модуль 2
-              </label>
+                <input type="radio" name="type" value="module2" checked={formData.type === 'module2'} onChange={handleChange}/> Модуль 2</label>
             </div>
           </div>
           
@@ -196,14 +156,46 @@ const Allow = observer(() => {
       ) : (
         <div className="allow-result">
           <h3>Допуск успешно сформирован!</h3>
-          <p>Теперь вы можете скачать документ в формате PDF:</p>
           
-          <button 
-            onClick={() => setSubmitted(false)} 
-            className="new-request-btn"
-          >
-            Создать новый запрос
-          </button>
+          {createdDopusk && (
+            <div className="dopusk-info">
+              <div className="info-row">
+                <span className="info-label">Номер допуска:</span>
+                <span className="info-value">{createdDopusk.id}</span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Студент:</span>
+                <span className="info-value">
+                  {`${createdDopusk.student.last_name} ${createdDopusk.student.first_name} ${createdDopusk.student.middle_name}`}
+                </span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Дисциплина:</span>
+                <span className="info-value">{createdDopusk.discipline.discipline_name}</span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Преподаватель:</span>
+                <span className="info-value">
+                  {`${createdDopusk.professor.last_name} ${createdDopusk.professor.first_name} ${createdDopusk.professor.middle_name}`}
+                </span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Тип:</span>
+                <span className="info-value">{getTypeName(createdDopusk.type)}</span>
+              </div>
+              <div className="info-row">
+                <span className="info-label">Дата создания:</span>
+                <span className="info-value">
+                  {new Date(createdDopusk.created_at).toLocaleString()}
+                </span>
+              </div>
+            </div>
+          )}
+          <div className="action-buttons">
+            <button onClick={() => setSubmitted(false)} className="new-request-btn">
+              Создать новый запрос
+            </button>
+          </div>
         </div>
       )}
     </div>

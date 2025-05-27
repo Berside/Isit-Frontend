@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useState, useContext } from "react";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
-import { MAIN, LOG, PROF, ABOUT, Allowance, Attendance, Disc, Discs, Sch, SCORE, Teach, Teachs, ProfScorE, RaspPROF, Dopusk} from "../../utils/consts";
+import { MAIN, LOG, PROF, ABOUT, Allowance, Attendance, Discs, Sch, SCORE, Teachs, ProfScorE, RaspPROF, Dopusk} from "../../utils/consts";
 import { Context } from "../../index";
 
 const Navbar = observer(() => {
@@ -65,23 +65,14 @@ const navItems = [
         </div>
         
         <div className="burger-menu">
-          <button 
-            className={`burger-button ${isMenuOpen ? "open" : ""}`}
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Меню"
-          >
+          <button className={`burger-button ${isMenuOpen ? "open" : ""}`}onClick={() => setIsMenuOpen(!isMenuOpen)}aria-label="Меню">
             <span></span>
             <span></span>
             <span></span>
           </button>
-          
           <div className={`menu-content ${isMenuOpen ? "open" : ""}`}>
             {navItems.map((item, index) => (
-              <div 
-                key={index} 
-                className="menu-item"
-                onClick={() => handleNavigate(item)}
-              >
+              <div key={index} className="menu-item" onClick={() => handleNavigate(item)} >
                 {item.title} {item.status && <span className="status">{item.status}</span>}
               </div>
             ))}

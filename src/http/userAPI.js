@@ -16,7 +16,6 @@ export const login = async (username, password) => {
 export const check = async () => {
   try {
     const token = localStorage.getItem('token');
-    console.log(token);
     const { data } = await $authHost.get('v1/user/current');
     localStorage.setItem('id', data.id);
     return data;
@@ -33,7 +32,6 @@ export const FetchUser = async (username) => {
           }
       }
     )
-     console.log(data)
     return data.data;
   } catch (error) {
     console.error('Ошибка при проверке пользователя:', error);

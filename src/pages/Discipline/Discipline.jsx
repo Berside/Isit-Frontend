@@ -48,6 +48,14 @@ const Discipline = observer(() => {
         return 'Нет практических занятий';
     };
 
+    const formatAuthors = (authors) => {
+        if (!authors) return 'Не указан';
+        if (typeof authors === 'string') return authors;
+        if (Array.isArray(authors)) return authors.map(a => a.name).join(', ');
+        if (authors.name) return authors.name;
+        return 'Не указан';
+    };
+
     if (loading) {
         return <div className="loading">Загрузка данных...</div>;
     }
@@ -79,7 +87,7 @@ const Discipline = observer(() => {
                 <div className="a-main-info">
                     <h1 className="a-title">{disc.discipline_name}</h1>
                     <p className="a-authors">
-                        Автор: {disc.authors || 'Не указан'}
+                        Автор: {formatAuthors(disc.authors)}
                     </p>
                 </div>
             </div>

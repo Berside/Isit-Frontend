@@ -5,7 +5,6 @@ export const GetAllGrade = async (userID) => {
           student_id: userID  
           }
       })
-    console.log(data);
     return data;
 }
 export const GetAllGradeProf = async (userID) => {
@@ -14,12 +13,10 @@ export const GetAllGradeProf = async (userID) => {
           professor_id: userID  
           }
       })
-    console.log(data);
     return data;
 }
 
 export const CreateGrade = async (value,student_id,  professor_id, type, discipline_id) => {
-    console.log(value,student_id,  professor_id, type, discipline_id)
     const {data} = await $authHost.post('v1/grade/create', {value,student_id,  professor_id, type, discipline_id})
     return data
 }

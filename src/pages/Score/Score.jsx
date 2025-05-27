@@ -15,8 +15,6 @@ const Score = observer(() => {
         const fetchGrades = async () => {
             try {
                 const response = await GetAllGrade(user.userID);
-                console.log('Response data:', response.data); 
-                
                 if (response && response.data && Array.isArray(response.data)) {
                     const disciplinesMap = {};
                     
@@ -43,8 +41,6 @@ const Score = observer(() => {
                     });
 
                     const formattedScores = Object.values(disciplinesMap);
-                    console.log('Formatted scores:', formattedScores); 
-                    
                     setScores(formattedScores);
                 }
             } catch (error) {

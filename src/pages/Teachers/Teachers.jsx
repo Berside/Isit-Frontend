@@ -10,7 +10,6 @@ const Teachers = observer(() => {
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
-
     useEffect(() => {
         const fetchTeachers = async () => {
             try {
@@ -30,11 +29,7 @@ const Teachers = observer(() => {
 
     const filteredTeachers = teachers.filter(teacher => {
         const fullName = `${teacher.last_name} ${teacher.first_name} ${teacher.middle_name}`;
-        return (
-            fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            teacher.disciplines.some(discipline =>
-                discipline.discipline_name.toLowerCase().includes(searchTerm.toLowerCase())
-        ));
+        return (fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||teacher.disciplines.some(discipline =>discipline.discipline_name.toLowerCase().includes(searchTerm.toLowerCase())));
     });
 
     const getInitial = (name) => {
@@ -73,17 +68,9 @@ const Teachers = observer(() => {
     return (
         <div className="teachers-page">
             <h1 className="teachers-title">Преподаватели</h1>
-            
             <div className="search-container">
-                <input
-                    type="text"
-                    placeholder="Поиск по имени или дисциплине..."
-                    className="search-input"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
+                <input type="text" placeholder="Поиск по имени или дисциплине..." className="search-input" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
             </div>
-            
             {filteredTeachers.length === 0 ? (
                 <div className="no-results">Преподаватели не найдены</div>
             ) : (
@@ -91,17 +78,9 @@ const Teachers = observer(() => {
                     {filteredTeachers.map(teacher => {
                         const fullName = `${teacher.last_name} ${teacher.first_name} ${teacher.middle_name}`;
                         return (
-                            <div 
-                                key={teacher.id} 
-                                className="teacher-card"
-                                onClick={() => handleTeacherClick(teacher.id)}
-                                style={{ cursor: 'pointer' }}
-                            >
+                            <div key={teacher.id} className="teacher-card" onClick={() => handleTeacherClick(teacher.id)} style={{ cursor: 'pointer' }}>
                                 <div className="teacher-avatar">
-                                    <div 
-                                        className="teacher-initial" 
-                                        style={{ backgroundColor: getAvatarColor(teacher.last_name) }}
-                                    >
+                                    <div className="teacher-initial" style={{ backgroundColor: getAvatarColor(teacher.last_name) }}>
                                         {getInitial(teacher.last_name)}
                                     </div>
                                 </div>

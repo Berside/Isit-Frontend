@@ -33,20 +33,13 @@ const Main = observer(() => {
 
   return (
     <div className="app">
-      <div className="main-header">
-        <p>Добро пожаловать в систему электронного деканата</p>
-      </div>
 
       <div className="dashboard-grid">
         <div className="quick-links">
           <h2>Быстрый доступ</h2>
           <div className="links-grid">
             {quickLinks.map((link, index) => (
-              <div 
-                key={index} 
-                className="link-card"
-                onClick={() => history(link.path)}
-              >
+              <div key={index} className="link-card" onClick={() => history(link.path)}>
                 <span className="link-icon">{link.icon}</span>
                 <span className="link-title">{link.title}</span>
               </div>
@@ -66,10 +59,7 @@ const Main = observer(() => {
                 {event.location && <p className="event-location">Место: {event.location}</p>}
                 <p className="event-description">{event.description}</p>
               </div>
-              <button 
-                className="event-button" 
-                onClick={() => history(`${EVENT}`)}
-              >
+              <button className="event-button" onClick={() => history(`${EVENT}`)}>
                 Подробнее
               </button>
             </div>
