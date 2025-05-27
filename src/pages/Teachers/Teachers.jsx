@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router-dom';
 import './Teachers.css';
 import { GetAllProf } from '../../http/PrepodApi';
 
@@ -8,6 +9,7 @@ const Teachers = observer(() => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTeachers = async () => {
@@ -56,6 +58,10 @@ const Teachers = observer(() => {
         return degrees[degree] || degree;
     };
 
+    const handleTeacherClick = (teacherId) => {
+        navigate(`/Teach/${teacherId}`);
+    };
+
     if (loading) {
         return <div className="loading">Загрузка данных...</div>;
     }
@@ -85,7 +91,12 @@ const Teachers = observer(() => {
                     {filteredTeachers.map(teacher => {
                         const fullName = `${teacher.last_name} ${teacher.first_name} ${teacher.middle_name}`;
                         return (
-                            <div key={teacher.id} className="teacher-card">
+                            <div 
+                                key={teacher.id} 
+                                className="teacher-card"
+                                onClick={() => handleTeacherClick(teacher.id)}
+                                style={{ cursor: 'pointer' }}
+                            >
                                 <div className="teacher-avatar">
                                     <div 
                                         className="teacher-initial" 
@@ -112,11 +123,11 @@ const Teachers = observer(() => {
                                         )}
                                     </div>
                                     <div className="teacher-contacts">
-                                        <a href={`mailto:${teacher.email}`} className="teacher-email">
+                                        <a href={`mailto:${teacher.email}`} className="teacher-email" onClick={(e) => e.stopPropagation()}>
                                             {teacher.email}
                                         </a>
                                         {teacher.phone_number && (
-                                            <a href={`tel:${teacher.phone_number}`} className="teacher-phone">
+                                            <a href={`tel:${teacher.phone_number}`} className="teacher-phone" onClick={(e) => e.stopPropagation()}>
                                                 {teacher.phone_number}
                                             </a>
                                         )}

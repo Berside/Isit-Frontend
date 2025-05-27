@@ -1,46 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import './Allow.css';
-
-const subjects = [
-  { id: 1, name: 'Математический анализ', teachers: ['Иванов А.А.', 'Петрова С.М.'] },
-  { id: 2, name: 'Программирование', teachers: ['Сидоров В.В.', 'Козлова Е.П.'] },
-  { id: 3, name: 'Физика', teachers: ['Фролов Д.С.'] },
-  { id: 4, name: 'Базы данных', teachers: ['Николаева Т.К.', 'Григорьев М.М.'] },
-];
+import { GetAllDisc } from '../../http/DiscAPI';
+import { GetAllProf } from '../../http/PrepodApi';
+import { CreateDopusk } from '../../http/dopusk';
+import { Context } from '../../index';
 
 const Allow = observer(() => {
+  const { user } = useContext(Context);
+  const [disciplines, setDisciplines] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const [formData, setFormData] = useState({
-    subject: '',
-    teacher: '',
+    discipline_id: '',
+    professor_id: '',
     date: '',
-    type: 'credit',
-    studentName: 'Иванов Иван Иванович', 
-    group: 'ИДБ-22-10' 
+    type: 'zachet',
+    student_id: user.user.id
   });
   
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [availableTeachers, setAvailableTeachers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [discResponse, profResponse] = await Promise.all([
+          GetAllDisc(),
+          GetAllProf()
+        ]);
+        
+        if (discResponse.data) setDisciplines(discResponse.data);
+        if (profResponse.data) setTeachers(profResponse.data);
+      } catch (err) {
+        setError(err.message || 'Ошибка загрузки данных');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
     
-    if (name === 'subject') {
-      const selectedSubject = subjects.find(subj => subj.name === value);
-      setAvailableTeachers(selectedSubject ? selectedSubject.teachers : []);
-      setFormData(prev => ({ ...prev, teacher: '' }));
+    if (name === 'discipline_id') {
+      const discipline = disciplines.find(d => d.id === Number(value));
+      if (discipline) {
+        const disciplineTeachers = teachers.filter(teacher => 
+          teacher.disciplines.some(d => d.id === discipline.id)
+        );
+        setAvailableTeachers(disciplineTeachers);
+      } else {
+        setAvailableTeachers([]);
+      }
+      setFormData(prev => ({ ...prev, professor_id: '' }));
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.subject || !formData.teacher || !formData.date) {
+    if (!formData.discipline_id || !formData.professor_id || !formData.date) {
       alert('Пожалуйста, заполните все поля формы');
       return;
     }
-    setSubmitted(true);
+
+    try {
+      await CreateDopusk(
+        formData.student_id,
+        formData.professor_id,
+        formData.date,
+        formData.type,
+        formData.discipline_id
+      );
+      setSubmitted(true);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Ошибка при создании допуска');
+    }
   };
+
+  if (loading) {
+    return <div className="loading">Загрузка данных...</div>;
+  }
+
+  if (error) {
+    return <div className="error">Ошибка: {error}</div>;
+  }
 
   return (
     <div className="allow-container">
@@ -49,34 +97,38 @@ const Allow = observer(() => {
       {!submitted ? (
         <form onSubmit={handleSubmit} className="allow-form">
           <div className="form-group">
-            <label htmlFor="subject">Дисциплина:</label>
+            <label htmlFor="discipline_id">Дисциплина:</label>
             <select
-              id="subject"
-              name="subject"
-              value={formData.subject}
+              id="discipline_id"
+              name="discipline_id"
+              value={formData.discipline_id}
               onChange={handleChange}
               required
             >
               <option value="">Выберите дисциплину</option>
-              {subjects.map(subj => (
-                <option key={subj.id} value={subj.name}>{subj.name}</option>
+              {disciplines.map(discipline => (
+                <option key={discipline.id} value={discipline.id}>
+                  {discipline.discipline_name}
+                </option>
               ))}
             </select>
           </div>
           
           <div className="form-group">
-            <label htmlFor="teacher">Преподаватель:</label>
+            <label htmlFor="professor_id">Преподаватель:</label>
             <select
-              id="teacher"
-              name="teacher"
-              value={formData.teacher}
+              id="professor_id"
+              name="professor_id"
+              value={formData.professor_id}
               onChange={handleChange}
-              disabled={!formData.subject}
+              disabled={!formData.discipline_id}
               required
             >
               <option value="">Выберите преподавателя</option>
-              {availableTeachers.map((teacher, index) => (
-                <option key={index} value={teacher}>{teacher}</option>
+              {availableTeachers.map(teacher => (
+                <option key={teacher.id} value={teacher.id}>
+                  {`${teacher.last_name} ${teacher.first_name} ${teacher.middle_name}`}
+                </option>
               ))}
             </select>
           </div>
@@ -94,14 +146,14 @@ const Allow = observer(() => {
           </div>
           
           <div className="form-group">
-            <label>Тип:</label>
+            <label>Тип допуска:</label>
             <div className="radio-group">
               <label>
                 <input
                   type="radio"
                   name="type"
-                  value="credit"
-                  checked={formData.type === 'credit'}
+                  value="zachet"
+                  checked={formData.type === 'zachet'}
                   onChange={handleChange}
                 />
                 Зачет
@@ -116,6 +168,26 @@ const Allow = observer(() => {
                 />
                 Экзамен
               </label>
+              <label>
+                <input
+                  type="radio"
+                  name="type"
+                  value="module1"
+                  checked={formData.type === 'module1'}
+                  onChange={handleChange}
+                />
+                Модуль 1
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="type"
+                  value="module2"
+                  checked={formData.type === 'module2'}
+                  onChange={handleChange}
+                />
+                Модуль 2
+              </label>
             </div>
           </div>
           
@@ -124,6 +196,7 @@ const Allow = observer(() => {
       ) : (
         <div className="allow-result">
           <h3>Допуск успешно сформирован!</h3>
+          <p>Теперь вы можете скачать документ в формате PDF:</p>
           
           <button 
             onClick={() => setSubmitted(false)} 

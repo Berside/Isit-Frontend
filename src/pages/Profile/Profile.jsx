@@ -58,7 +58,6 @@ const Profile = observer(() => {
                     <p className="user-email">{userData.first_name} {userData.last_name} {userData.middle_name}</p>
                     <p className="user-email">{userData.email}</p>
                 </div>
-                
                 <div className="user-details">
                     <div className="detail-row">
                         <span className="detail-label">Роль:</span>

@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useState, useContext } from "react";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
-import { MAIN, LOG, PROF, ABOUT, Allowance, Attendance, Disc, Discs, Sch, SCORE, Teach, Teachs } from "../../utils/consts";
+import { MAIN, LOG, PROF, ABOUT, Allowance, Attendance, Disc, Discs, Sch, SCORE, Teach, Teachs, ProfScorE, RaspPROF, Dopusk} from "../../utils/consts";
 import { Context } from "../../index";
 
 const Navbar = observer(() => {
@@ -21,26 +21,32 @@ const Navbar = observer(() => {
     window.location.reload();
   };
 
-  const navItems = [
-    { title: "Главная", path: MAIN },
-    { title: "О нас", path: ABOUT},
-    { title: "Дисциплина", path: Disc},
-    { title: "Дисциплины", path: Discs},
-    { title: "Преподаватель", path: Teach },
-    { title: "Преподаватели", path: Teachs },
-    ...(user.isAuth
-      ? [
-          { title: "Допуск", path: Allowance },
-          { title: "Посещаемость", path: Attendance},
-          { title: "Расписание", path: Sch},
-          { title: "Оценки студента", path: SCORE},
+const navItems = [
+  { title: "Главная", path: MAIN },
+  { title: "О нас", path: ABOUT },
+  { title: "Дисциплины", path: Discs },
+  { title: "Преподаватели", path: Teachs },
+  ...(user.isAuth
+    ? user.isProf
+      ? [ 
+          { title: "Оценки", path: ProfScorE },
+          { title: "Допуски", path: Dopusk },
+          { title: "Расписание", path: RaspPROF },
           { title: "Профиль", path: PROF },
           { title: "Выход", action: logOut }
         ]
-      : [
-          { title: "Войти", path: LOG }
-        ])
-  ];
+      : [ 
+          { title: "Допуск", path: Allowance },
+          { title: "Посещаемость", path: Attendance },
+          { title: "Расписание", path: Sch },
+          { title: "Профиль", path: PROF },
+          { title: "Оценки студента", path: SCORE },
+          { title: "Выход", action: logOut }
+        ]
+    : [
+        { title: "Войти", path: LOG }
+      ])
+];
 
   const handleNavigate = (item) => {
     if (item.action) {

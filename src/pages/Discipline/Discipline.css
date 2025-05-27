@@ -1,0 +1,168 @@
+.aaa {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: #1e3a8a;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #f0f4ff;
+}
+
+.aheader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 30px;
+}
+
+.aavatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.ainitial {
+    width: 100%; 
+    height: 100%; 
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.a-main-info {
+    flex-grow: 1;
+}
+
+.a-title {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 2rem;
+}
+
+.a-authors {
+    margin: 10px 0 0 0;
+    color: #7f8c8d;
+    font-size: 1.2rem;
+}
+
+.a-content {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.a-section {
+    margin-bottom: 30px;
+}
+
+.a-title {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+
+.a-description {
+    line-height: 1.6;
+    color: #495057;
+}
+
+.a-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.a-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.a-label {
+    display: block;
+    font-weight: 500;
+    color: #6c757d;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.a-value {
+    font-size: 1.1rem;
+    color: #2c3e50;
+}
+
+.a-content {
+    line-height: 1.6;
+    color: #495057;
+    white-space: pre-line;
+}
+
+.loading, .error, .not-found {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 50px;
+}
+
+.error {
+    color: #e74c3c;
+}
+
+.not-found {
+    color: #7f8c8d;
+}
+
+@media (max-width: 768px) {
+    .a-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .a-initial {
+        width: 100px;
+        height: 100px;
+        font-size: 50px;
+    }
+    
+    .a-title {
+        font-size: 1.5rem;
+    }
+    
+    .a-authors {
+        font-size: 1rem;
+    }
+    
+    .a-content {
+        padding: 20px;
+    }
+    
+    .a-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -4,3 +4,12 @@ export const GetAllProf = async () => {
     console.log(data);
     return data;
 }
+export const GetProfById = async (id) => {
+    const {data} = await $host.get('v1/professor/getOne', {
+      params: {
+          id: id  
+          }
+      })
+    console.log(data);
+    return data;
+}

@@ -14,7 +14,7 @@ const Score = observer(() => {
     useEffect(() => {
         const fetchGrades = async () => {
             try {
-                const response = await GetAllGrade(id);
+                const response = await GetAllGrade(user.userID);
                 console.log('Response data:', response.data); 
                 
                 if (response && response.data && Array.isArray(response.data)) {
@@ -31,14 +31,13 @@ const Score = observer(() => {
                                 exam: null
                             };
                         }
-                        
-                        if (item.type === 'MODULE1') {
+                        if (item.type.toLowerCase() === 'module1') {
                             disciplinesMap[item.discipline.id].module1 = item.value;
-                        } else if (item.type === 'MODULE2') {
+                        } else if (item.type.toLowerCase() === 'module2') {
                             disciplinesMap[item.discipline.id].module2 = item.value;
-                        } else if (item.type === 'CREDIT') {
+                        } else if (item.type.toLowerCase() === 'credit') {
                             disciplinesMap[item.discipline.id].credit = item.value >= 35 ? 'зачтено' : 'не зачтено';
-                        } else if (item.type === 'EXAM') {
+                        } else if (item.type.toLowerCase() === 'exam') {
                             disciplinesMap[item.discipline.id].exam = item.value;
                         }
                     });

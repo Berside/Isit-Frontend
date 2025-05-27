@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useNavigate } from 'react-router-dom';
 import './Disciplines.css';
 import { GetAllDisc } from '../../http/DiscAPI';
 
@@ -8,7 +9,7 @@ const Disciplines = observer(() => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchDisciplines = async () => {
             try {
@@ -26,10 +27,13 @@ const Disciplines = observer(() => {
         fetchDisciplines();
     }, []);
 
-    const filteredDisciplines = disciplines.filter(discipline =>
-        discipline.discipline_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (discipline.authors && discipline.authors.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
+        const filteredDisciplines = disciplines.filter(discipline => {
+            const nameMatch = discipline.discipline_name.toLowerCase().includes(searchTerm.toLowerCase());
+            const authorsMatch = discipline.authors 
+                ? String(discipline.authors).toLowerCase().includes(searchTerm.toLowerCase())
+                : false;
+            return nameMatch || authorsMatch;
+        });
 
     const getInitial = (name) => {
         return name.charAt(0).toUpperCase();
@@ -47,6 +51,10 @@ const Disciplines = observer(() => {
         if (hasPractice) return 'Есть практика';
         if (hasLabs) return 'Есть лабораторные';
         return 'Нет практических занятий';
+    };
+
+    const handleDisckClick = (DiscId) => {
+        navigate(`/Disc/${DiscId}`);
     };
 
     if (loading) {
@@ -76,7 +84,7 @@ const Disciplines = observer(() => {
             ) : (
                 <div className="disciplines-grid">
                     {filteredDisciplines.map(discipline => (
-                        <div key={discipline.id} className="discipline-card">
+                        <div key={discipline.id} className="discipline-card" onClick={() => handleDisckClick(discipline.id)}>
                             <div className="discipline-header">
                                 <div 
                                     className="discipline-avatar" 

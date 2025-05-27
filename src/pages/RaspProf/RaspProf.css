@@ -1,0 +1,9 @@
+.aa-day{
+    width: 200px;
+    height: 200px;
+    border: 1px solid #eee;
+    padding: 8px;
+    position: relative;
+    min-height: 180px;
+    height: 400px;
+}

@@ -19,6 +19,13 @@ const App = observer(() => {
           if (response?.data) {
             user.setUser(response.data);
             user.setIsAuth(true);
+            user.setUserId(response.data.id)
+            if (response.data.role.name == "professor") {
+              user.setIsProf(true)
+            }
+            if (response.data.role.name == "student") {
+              user.setIsStud(true)
+            }
           }
         } catch (error) {
           console.error('Ошибка при проверке пользователя:', error);

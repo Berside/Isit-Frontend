@@ -1,0 +1,171 @@
+.teacher-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: #1e3a8a;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: #f0f4ff;
+}
+
+.teacher-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 30px;
+}
+
+.teacher-avatar {
+    flex-shrink: 0;
+}
+
+.teacher-initial {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+.teacher-main-info {
+    flex-grow: 1;
+}
+
+.teacher-name {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 2rem;
+}
+
+.teacher-degree {
+    margin: 10px 0 0 0;
+    color: #7f8c8d;
+    font-size: 1.2rem;
+}
+
+.teacher-details {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-section {
+    margin-bottom: 30px;
+}
+
+.section-title {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 5px;
+}
+
+.contact-info p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+}
+
+.contact-info a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+.disciplines-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.discipline-item {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.discipline-name {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+}
+
+.discipline-description {
+    margin: 0;
+    color: #7f8c8d;
+    line-height: 1.5;
+}
+
+.no-disciplines {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+.teacher-bio {
+    line-height: 1.6;
+    color: #495057;
+}
+
+.loading, .error, .not-found {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 50px;
+}
+
+.error {
+    color: #e74c3c;
+}
+
+.not-found {
+    color: #7f8c8d;
+}
+
+@media (max-width: 768px) {
+    .teacher-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .teacher-initial {
+        width: 100px;
+        height: 100px;
+        font-size: 50px;
+    }
+    
+    .teacher-name {
+        font-size: 1.5rem;
+    }
+    
+    .teacher-degree {
+        font-size: 1rem;
+    }
+    
+    .teacher-details {
+        padding: 20px;
+    }
+    
+    .disciplines-list {
+        grid-template-columns: 1fr;
+    }
+}
