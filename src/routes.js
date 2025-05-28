@@ -2,7 +2,7 @@ import Main from "./pages/Main/Main"
 import Profile from "./pages/Profile/Profile"
 import Event from "./pages/Event/Event"
 import Auth from "./pages/Auth/Auth"
-import {MAIN,LOG, PROF, EVENT, ABOUT, Allowance, Attendance, Disc, Discs, Sch, SCORE, Teach, Teachs, ProfScorE, Dopusk, RaspPROF} from "./utils/consts"
+import {MAIN,LOG, PROF, EVENT, ABOUT, Allowance, Attendance, Disc, Discs, Sch, SCORE, Teach, Teachs, ProfScorE, Dopusk, RaspPROF, BOT} from "./utils/consts"
 import About from "./pages/About/about"    
 import Allow from "./pages/Allowance/Allow"
 import attendance from "./pages/Attendance/attendance"
@@ -15,6 +15,7 @@ import Teachers from "./pages/Teachers/Teachers"
 import ProfScore from "./pages/ProfScore/ProfScore"
 import DopuskProf from "./pages/dopuskProf/DopuskProf"
 import RaspProf from "./pages/RaspProf/RaspProf"
+import Assistant from "./pages/Bot/Bot"
 export const authRoutes = [
     {
         path: PROF,
@@ -84,5 +85,9 @@ export const publicRoutes = [
             {
         path: Teachs,
         Component: Teachers
+    },
+         {
+        path: BOT,
+        Component: Assistant
     },
 ]
