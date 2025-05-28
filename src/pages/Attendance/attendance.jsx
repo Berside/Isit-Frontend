@@ -1,42 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import './attendance.css';
+import { GetAttendByID } from '../../http/Attendance';
+import { Context } from '../../index';
 
 const Attendance = observer(() => {
-    const disciplines = [
-        { id: 1, name: 'Математический анализ' },
-        { id: 2, name: 'Основы объектно-ориентированного программирования' },
-    ];
+    const { user } = useContext(Context);
+    const id = user.userID;
+    const [attendanceData, setAttendanceData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [selectedDiscipline, setSelectedDiscipline] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
 
-    const attendanceData = {
-        1: [
-            { date: '2023-09-01', present: true },
-            { date: '2023-09-08', present: false },
-            { date: '2023-09-15', present: true },
-            { date: '2023-09-22', present: true },
-            { date: '2023-09-29', present: false },
-        ],
-        2: [
-            { date: '2023-09-02', present: true },
-            { date: '2023-09-09', present: true },
-            { date: '2023-09-16', present: false },
-            { date: '2023-09-23', present: true },
-        ],
+    useEffect(() => {
+        const fetchAttendanceData = async () => {
+            try {
+                setIsLoading(true);
+                const response = await GetAttendByID(id);
+                if (response.message === "Success") {
+                    setAttendanceData(response.data);
+                    // Устанавливаем первую дисциплину как выбранную по умолчанию
+                    if (response.data.length > 0) {
+                        const firstDisciplineId = response.data[0].discipline.id;
+                        setSelectedDiscipline(firstDisciplineId);
+                    }
+                } else {
+                    setError("Failed to fetch attendance data");
+                }
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchAttendanceData();
+    }, [id]);
+
+    // Получаем уникальные дисциплины из данных о посещаемости
+    const getUniqueDisciplines = () => {
+        const disciplinesMap = new Map();
+        attendanceData.forEach(item => {
+            if (!disciplinesMap.has(item.discipline.id)) {
+                disciplinesMap.set(item.discipline.id, {
+                    id: item.discipline.id,
+                    name: item.discipline.discipline_name
+                });
+            }
+        });
+        return Array.from(disciplinesMap.values());
     };
 
-    const [selectedDiscipline, setSelectedDiscipline] = useState(disciplines[0].id);
-    const [searchTerm, setSearchTerm] = useState('');
+    const disciplines = getUniqueDisciplines();
+
     const filteredDisciplines = disciplines.filter(discipline =>
         discipline.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    const currentAttendance = attendanceData[selectedDiscipline] || [];
+
+    // Фильтруем данные по выбранной дисциплине
+    const getCurrentAttendance = () => {
+        if (!selectedDiscipline) return [];
+        return attendanceData
+            .filter(item => item.discipline.id === selectedDiscipline)
+            .map(item => ({
+                date: item.date,
+                present: item.visited
+            }))
+            .sort((a, b) => new Date(b.date) - new Date(a.date)); // Сортируем по дате (новые сначала)
+    };
+
+    const currentAttendance = getCurrentAttendance();
+
     const formatDate = (dateString) => {
         const options = { day: 'numeric', month: 'long', year: 'numeric', weekday: 'short' };
         return new Date(dateString).toLocaleDateString('ru-RU', options);
     };
+
     const totalClasses = currentAttendance.length;
     const attendedClasses = currentAttendance.filter(item => item.present).length;
     const attendancePercentage = totalClasses > 0 ? Math.round((attendedClasses / totalClasses) * 100) : 0;
+
+    if (isLoading) {
+        return <div className="attendance-container">Загрузка данных о посещаемости...</div>;
+    }
+
+    if (error) {
+        return <div className="attendance-container">Ошибка: {error}</div>;
+    }
+
+    if (attendanceData.length === 0) {
+        return <div className="attendance-container">Нет данных о посещаемости</div>;
+    }
+
     return (
         <div className="attendance-container">
             <h1 className="attendance-title">Посещаемость</h1>
@@ -46,8 +102,9 @@ const Attendance = observer(() => {
                     <label htmlFor="discipline-select">Выберите дисциплину:</label>
                     <select
                         id="discipline-select"
-                        value={selectedDiscipline}
+                        value={selectedDiscipline || ''}
                         onChange={(e) => setSelectedDiscipline(Number(e.target.value))}
+                        disabled={disciplines.length === 0}
                     >
                         {filteredDisciplines.map(discipline => (
                             <option key={discipline.id} value={discipline.id}>
@@ -80,7 +137,7 @@ const Attendance = observer(() => {
                 </div>
                 
                 {currentAttendance.length === 0 ? (
-                    <div className="no-data">Нет данных о посещаемости</div>
+                    <div className="no-data">Нет данных о посещаемости для выбранной дисциплины</div>
                 ) : (
                     currentAttendance.map((item, index) => (
                         <div key={index} className="attendance-item">

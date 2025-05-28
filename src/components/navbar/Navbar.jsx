@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import React, { useState, useContext } from "react";
 import "./Navbar.css";
 import { useNavigate } from "react-router-dom";
-import { MAIN, LOG, PROF, ABOUT, Allowance, Attendance, Discs, Sch, SCORE, Teachs, ProfScorE, RaspPROF, Dopusk, BOT} from "../../utils/consts";
+import { MAIN, LOG, PROF, ABOUT, Allowance, Attendance, Discs, Sch, SCORE, Teachs, ProfScorE, RaspPROF, Dopusk, BOT, AtProf} from "../../utils/consts";
 import { Context } from "../../index";
 
 const Navbar = observer(() => {
@@ -26,17 +26,19 @@ const navItems = [
   { title: "О нас", path: ABOUT },
   { title: "Дисциплины", path: Discs },
   { title: "Преподаватели", path: Teachs },
-  { title: "Ассистент", path: BOT },
   ...(user.isAuth
     ? user.isProf
       ? [ 
+          { title: "Ассистент", path: BOT },
           { title: "Оценки", path: ProfScorE },
           { title: "Допуски", path: Dopusk },
           { title: "Расписание", path: RaspPROF },
+          { title: "Посещаемость", path: AtProf },
           { title: "Профиль", path: PROF },
           { title: "Выход", action: logOut }
         ]
       : [ 
+          { title: "Ассистент", path: BOT },
           { title: "Допуск", path: Allowance },
           { title: "Посещаемость", path: Attendance },
           { title: "Расписание", path: Sch },

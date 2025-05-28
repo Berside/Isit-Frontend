@@ -22,11 +22,7 @@ const Assistant = observer(() => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  useEffect(() => {
-    saveMessagesToLocalStorage(messages);
-  }, [messages]);
-
+  
   useEffect(() => {
     const handleBeforeUnload = () => {
       localStorage.removeItem('chatMessages');
